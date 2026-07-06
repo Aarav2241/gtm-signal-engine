@@ -58,7 +58,8 @@ if st.sidebar.button("🚀 Trigger Cloud Scraper Now", use_container_width=True)
                 if resp.status_code == 204:
                     st.sidebar.success("✅ Cloud scraper triggered! New leads will arrive in ~2 mins.")
                 else:
-                    st.sidebar.error(f"GitHub API Error: {resp.status_code}")
+                    err_msg = resp.json().get('message', resp.text) if resp.text else 'Forbidden'
+                    st.sidebar.error(f"GitHub API Error ({resp.status_code}): {err_msg}")
             except Exception as e:
                 st.sidebar.error(f"Error: {e}")
     else:
