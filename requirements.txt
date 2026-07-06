@@ -6,3 +6,4 @@ pydantic
 apscheduler
 streamlit
 requests
+python-dotenv
