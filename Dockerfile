@@ -22,9 +22,8 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements-scraper.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-scraper.txt
 
 # Install Playwright Chromium browser for Crawl4AI
 RUN playwright install --with-deps chromium
