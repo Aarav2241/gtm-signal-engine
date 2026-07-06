@@ -3,6 +3,7 @@ import sys
 import os
 import json
 import pandas as pd
+import requests
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from database.queries import get_all_signals
@@ -31,6 +32,50 @@ st.sidebar.markdown("---")
 st.sidebar.header("🏢 Firmographic Filters")
 min_icp_score = st.sidebar.slider("⭐ Minimum ICP Fit Score", 0, 100, 50, help="Filter out leads below this score.")
 only_matched = st.sidebar.checkbox("🎯 Show Only CRM Target Accounts", value=False)
+
+st.sidebar.markdown("---")
+st.sidebar.subheader("⚡ Live Lead Automation")
+if st.sidebar.button("🚀 Trigger Cloud Scraper Now", use_container_width=True):
+    gh_token = ""
+    try:
+        if "GITHUB_TOKEN" in st.secrets:
+            gh_token = st.secrets["GITHUB_TOKEN"]
+    except Exception:
+        pass
+    if not gh_token:
+        gh_token = os.environ.get("GITHUB_TOKEN", "")
+        
+    if gh_token:
+        with st.spinner("📡 Sending signal to wake up GitHub Cloud Scraper..."):
+            url = "https://api.github.com/repos/Aarav2241/gtm-signal-engine/actions/workflows/daily_scrape.yml/dispatches"
+            headers = {
+                "Accept": "application/vnd.github+json",
+                "Authorization": f"Bearer {gh_token}",
+                "X-GitHub-Api-Version": "2022-11-28"
+            }
+            try:
+                resp = requests.post(url, headers=headers, json={"ref": "main"})
+                if resp.status_code == 204:
+                    st.sidebar.success("✅ Cloud scraper triggered! New leads will arrive in ~2 mins.")
+                else:
+                    st.sidebar.error(f"GitHub API Error: {resp.status_code}")
+            except Exception as e:
+                st.sidebar.error(f"Error: {e}")
+    else:
+        with st.spinner("🤖 Crawling live news feeds, PE portfolios, and CDSCO registries..."):
+            try:
+                import subprocess
+                res = subprocess.run([sys.executable, "main.py", "scrape", "--all"], capture_output=True, text=True)
+                if res.returncode == 0:
+                    st.sidebar.success("✅ Live scrape completed successfully!")
+                    st.rerun()
+                else:
+                    if "No module named 'crawl4ai'" in res.stderr or "No module named" in res.stderr:
+                        st.sidebar.info("💡 You are on Streamlit Cloud! To enable 1-click cloud scraping from this button, add `GITHUB_TOKEN` (a GitHub Personal Access Token) to your Streamlit Secrets.")
+                    else:
+                        st.sidebar.error("Scrape error. Check server logs.")
+            except Exception as e:
+                st.sidebar.error(f"Execution error: {e}")
 
 if signals:
     table_data = []
