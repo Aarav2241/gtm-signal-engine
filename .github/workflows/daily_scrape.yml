@@ -1,0 +1,56 @@
+name: 🤖 Daily GTM Signal Scraper
+
+on:
+  # Automatically run every day at 2:00 AM UTC (7:30 AM IST)
+  schedule:
+    - cron: '0 2 * * *'
+  # Allow manual click-to-run from the GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  scrape-and-update-db:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to push updated SQLite database back to repo
+
+    steps:
+      - name: 📥 Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🐍 Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🌐 Install Playwright Chromium browser & OS libraries
+        run: |
+          playwright install --with-deps chromium
+
+      - name: 🚀 Run live web scrapers across all sources
+        run: |
+          python main.py scrape --all
+
+      - name: 💾 Commit and push updated database to GitHub
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # Stage SQLite database and any updated config/snapshot files
+          git add database/signals.db config/*.json || true
+          
+          # Check if any changes were made
+          if git diff --staged --quiet; then
+            echo "✅ No new signals detected today. Database unchanged."
+          else
+            git commit -m "🤖 Auto-scrape: Updated GTM signals database [skip ci]"
+            git push
+            echo "🚀 Successfully pushed updated database with fresh leads!"
+          fi

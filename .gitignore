@@ -1,0 +1,27 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*.log
+
+# Antigravity / Agent generated artifacts & logs
+.gemini/
+.system_generated/
+scratch/
+brain/
+*.log
+clean_*.py
+
+# DO NOT IGNORE database/signals.db! 
+# We need signals.db in GitHub so Streamlit Cloud can read historical data and GitHub Actions can update it.

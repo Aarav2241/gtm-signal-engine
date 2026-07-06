@@ -1,0 +1,8 @@
+crawl4ai
+groq
+feedparser
+rapidfuzz
+pydantic
+apscheduler
+streamlit
+requests

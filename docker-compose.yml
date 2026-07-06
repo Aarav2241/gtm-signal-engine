@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  gtm-signal-engine:
+    build: .
+    container_name: gtm_signal_engine
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./database:/app/database
+      - ./config:/app/config
+    restart: always
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0

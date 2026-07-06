@@ -1,0 +1,17 @@
+[
+  {
+    "fund_name": "Quadria Capital",
+    "portfolio_url": "https://www.quadriacapital.com/portfolio/",
+    "sector_focus": "Healthcare"
+  },
+  {
+    "fund_name": "True North",
+    "portfolio_url": "https://www.truenorth.co.in/",
+    "sector_focus": "Multi-sector"
+  },
+  {
+    "fund_name": "OrbiMed",
+    "portfolio_url": "https://www.orbimed.com/portfolio/",
+    "sector_focus": "Healthcare"
+  }
+]

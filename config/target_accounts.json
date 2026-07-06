@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Agappe Diagnostics",
+    "aliases": ["Agappe"],
+    "domain": "agappe.com",
+    "tier": "1A",
+    "sector": "Diagnostics",
+    "website": "https://www.agappe.com",
+    "team_page_url": "https://www.agappe.com/corporate/management-team.html"
+  },
+  {
+    "name": "Molbio Diagnostics",
+    "aliases": ["Molbio"],
+    "domain": "molbiodiagnostics.com",
+    "tier": "1A",
+    "sector": "Diagnostics",
+    "website": "https://www.molbiodiagnostics.com",
+    "team_page_url": "https://www.molbiodiagnostics.com/about-us"
+  },
+  {
+    "name": "4baseCare",
+    "aliases": ["4base Care"],
+    "domain": "4basecare.com",
+    "tier": "1A",
+    "sector": "Healthcare IT",
+    "website": "https://4basecare.com",
+    "team_page_url": "https://4basecare.com/about-us/"
+  }
+]
